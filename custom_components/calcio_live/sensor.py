@@ -227,7 +227,6 @@ class CalcioLiveSensor(Entity):
     
         if self._code == "99999":
             return None, None
-
         calendar_url = f"{self.base_url_2}/{self._code}/scoreboard"
         try:
             async with aiohttp.ClientSession() as session:
@@ -235,8 +234,9 @@ class CalcioLiveSensor(Entity):
                     response.raise_for_status()
                     data = await response.json()
                     # חילוץ תאריכי התחלה וסיום מלוח השנה
-                    calendar_start_date = self._start_date.strftime("%Y-%m-%d")
-                    calendar_end_date = self._end_date.strftime("%Y-%m-%d")
+                    now = datetime.now()
+                    calendar_start_date = (now - timedelta(days=30)).strftime("%Y-%m-%d")
+                    calendar_end_date = (now + timedelta(days=240)).strftime("%Y-%m-%d")
                     return calendar_start_date, calendar_end_date
         except Exception as e:
             _LOGGER.error(f"שגיאה בשליפת לוח המשחקים: {e}")
