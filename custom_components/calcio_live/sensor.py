@@ -235,8 +235,8 @@ class CalcioLiveSensor(Entity):
                     response.raise_for_status()
                     data = await response.json()
                     # חילוץ תאריכי התחלה וסיום מלוח השנה
-                    calendar_start_date = data.get("calendarStartDate", "2025-08-01T04:00Z")
-                    calendar_end_date = data.get("calendarEndDate", "2030-01-01T00:00Z")
+                    calendar_start_date = self._start_date.strftime("%Y-%m-%d")
+                    calendar_end_date = self._end_date.strftime("%Y-%m-%d")
                     return calendar_start_date, calendar_end_date
         except Exception as e:
             _LOGGER.error(f"שגיאה בשליפת לוח המשחקים: {e}")
